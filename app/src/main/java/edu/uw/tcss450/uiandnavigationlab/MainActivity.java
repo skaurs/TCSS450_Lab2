@@ -19,8 +19,9 @@ public class MainActivity extends AppCompatActivity {
         String email = args.getEmail();
 
         //userInfo from part 2 of lab step 28
-        UserInfoViewModel model = new ViewModelProvider(this).get(UserInfoViewModel.class);
-        model.setEmail(email);
+        //part3 step 40
+        new ViewModelProvider(this,
+                new UserInfoViewModel.UserInfoViewModelFactory(email)).get(UserInfoViewModel.class);
     }
 
 }
