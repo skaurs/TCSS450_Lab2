@@ -36,7 +36,7 @@ public class IncrementorFragment extends Fragment {
         binding.textCount.setText("My Count is 0");
 
         //obtain access to ViewModel
-        IncrementorViewModel model = new ViewModelProvider(this).get(IncrementorViewModel.class);
+        IncrementorViewModel model = new ViewModelProvider(getActivity()).get(IncrementorViewModel.class);
 
         //add observer to the MutableLiveData - mCount
         model.addCountObserver(getViewLifecycleOwner(), count ->
