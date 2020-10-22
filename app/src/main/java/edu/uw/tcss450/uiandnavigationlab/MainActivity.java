@@ -2,12 +2,20 @@ package edu.uw.tcss450.uiandnavigationlab;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.uw.tcss450.uiandnavigationlab.model.UserInfoViewModel;
 
 public class MainActivity extends AppCompatActivity {
+
+    private AppBarConfiguration myAppBarConfiguration;
 
 
     @Override
@@ -22,6 +30,15 @@ public class MainActivity extends AppCompatActivity {
         //part3 step 40
         new ViewModelProvider(this,
                 new UserInfoViewModel.UserInfoViewModelFactory(email)).get(UserInfoViewModel.class);
+
+        //step69
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        myAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_incrementor, R.id.navigation_blogs).build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, myAppBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+
     }
 
 }
