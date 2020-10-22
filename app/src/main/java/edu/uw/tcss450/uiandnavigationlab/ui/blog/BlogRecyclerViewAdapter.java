@@ -7,19 +7,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import edu.uw.tcss450.uiandnavigationlab.R;
 import edu.uw.tcss450.uiandnavigationlab.databinding.FragmentBlogCardBinding;
 
 public class BlogRecyclerViewAdapter extends RecyclerView.Adapter<BlogRecyclerViewAdapter.BlogViewHolder> {
 
+
     private final List<BlogPost> mBlogs;
+    private final Map<BlogPost, Boolean> mExpandedFlags;
 
     public BlogRecyclerViewAdapter(List<BlogPost> items){
         this.mBlogs = items;
+        mExpandedFlags = mBlogs.stream().collect(Collectors.toMap(Function.identity(), blog -> false));
     }
 
     @NonNull
@@ -68,6 +75,7 @@ public class BlogRecyclerViewAdapter extends RecyclerView.Adapter<BlogRecyclerVi
          * @param button the button that was clicked
          */
         private void handleMoreOrLess(final View button) {
+            mExpandedFlags.put(mBlog, !mExpandedFlags.get(mBlog));
             displayPreview();
         }
 
@@ -75,7 +83,7 @@ public class BlogRecyclerViewAdapter extends RecyclerView.Adapter<BlogRecyclerVi
          * Helper used to determine if the preview should be displayed or not.
          */
         private void displayPreview() {
-            if (binding.textPreview.getVisibility() == View.GONE) {
+            if (mExpandedFlags.get(mBlog)) {
                 binding.textPreview.setVisibility(View.VISIBLE);
                 binding.buittonMore.setImageIcon(Icon.createWithResource(mView.getContext(),
                         R.drawable.ic_less_grey_24dp));
@@ -88,8 +96,10 @@ public class BlogRecyclerViewAdapter extends RecyclerView.Adapter<BlogRecyclerVi
 
         void setBlog(final BlogPost blog) {
             mBlog = blog;
-            binding.buttonFullPost.setOnClickListener(view ->
-                    {}
+            binding.buttonFullPost.setOnClickListener(view -> {
+                Navigation.findNavController(mView).navigate(
+                        BlogListFragmentDirections.actionNavigationBlogsToBlogPostFragment(blog));
+                    }
             );
             binding.textTitle.setText(blog.getTitle());
             binding.textPubdate.setText(blog.getPubDate());
@@ -99,6 +109,8 @@ public class BlogRecyclerViewAdapter extends RecyclerView.Adapter<BlogRecyclerVi
             binding.textPreview.setText(preview);
             displayPreview();
         }
+
     }
+
 }
 
