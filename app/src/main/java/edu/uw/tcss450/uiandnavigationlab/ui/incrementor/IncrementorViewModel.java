@@ -40,6 +40,6 @@ public class IncrementorViewModel extends ViewModel {
      * Increment the current count by 1.
      */
     public void increment() {
-        mCount.setValue(mCount.getValue() + 2);
+        mCount.setValue(mCount.getValue() + 5);
     }
 }
